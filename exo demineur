@@ -1,0 +1,156 @@
+import random
+
+#Affichage des tableaux
+
+tableau_placement  = [[0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0]]
+
+jeu_affiché = [["■","■","■","■","■","■","■","■","■","■"],
+["■","■","■","■","■","■","■","■","■","■"],
+["■","■","■","■","■","■","■","■","■","■"],
+["■","■","■","■","■","■","■","■","■","■"],
+["■","■","■","■","■","■","■","■","■","■"],
+["■","■","■","■","■","■","■","■","■","■"],
+["■","■","■","■","■","■","■","■","■","■"],
+["■","■","■","■","■","■","■","■","■","■"]]
+
+#rendre le tableau plus joli
+
+def affichage(jeu_affiché):
+
+  print("    0 1 2 3 4 5 6 7 8 9 ")
+ 
+  print("   ____________________")
+
+  for ligne in range(0,8):
+  
+    print(ligne, end=" | ")
+  
+    for colonne in range(0,10):
+     
+      print(jeu_affiché[ligne][colonne], end=" ")
+   
+    print("")
+
+gameOver = False
+
+Bombe= False
+
+#bombe I affichage
+
+nb_de_bombes = 0
+
+while nb_de_bombes == False:
+
+    for i in range(len(tableau_placement)):
+        
+        for j in range(len(tableau_placement[i])):
+
+            tableau_placement[i][j] = random.randint(1,10)
+          
+            if(tableau_placement[i][j] == 5):
+               
+                tableau_placement[i][j] = "X"
+               
+                Bombe = True
+               
+                nb_de_bombes += 1
+          
+            else:
+               
+                tableau_placement[i][j] = 0
+
+nbrCases = len(tableau_placement)*len(tableau_placement[0]) - nb_de_bombes
+
+#Input & Décompte des bombes sur chaque cases
+
+while gameOver == False and nbrCases>0:
+
+    affichage(jeu_affiché)
+   
+    ligne_choisie = int(input("choisissez une ligne : "))
+   
+    colonne_choisie = int(input("choisissez une colonne : "))
+
+    if(colonne_choisie <(len(tableau_placement[0])) and ligne_choisie <(len(tableau_placement))):
+
+      if(tableau_placement[ligne_choisie][colonne_choisie] == "X"):
+         
+          gameOver = True
+          
+          print("BOOM")
+
+      bombe_proche =0
+      nbrCases -= 1
+      
+      if(colonne_choisie != 9):
+         
+          if(tableau_placement[ligne_choisie][colonne_choisie+1] == "X"):
+              
+              bombe_proche= bombe_proche+1
+              
+      if(colonne_choisie != 0):
+          
+          if(tableau_placement[ligne_choisie][colonne_choisie-1] == "X"):
+              
+              bombe_proche= bombe_proche+1
+              
+
+      if(ligne_choisie != 0):
+        
+          if(tableau_placement[ligne_choisie-1][colonne_choisie] == "X"):
+             
+              bombe_proche= bombe_proche+1
+          
+          if(colonne_choisie !=0):
+             
+              if(tableau_placement[ligne_choisie-1][colonne_choisie-1] == "X"):
+                 
+                  bombe_proche= bombe_proche+1
+              
+          if(colonne_choisie != 9):
+            
+              if(tableau_placement[ligne_choisie-1][colonne_choisie] == "X"):
+                  
+                 bombe_proche= bombe_proche+1
+
+      if(ligne_choisie !=8):
+         
+          if(tableau_placement[ligne_choisie][colonne_choisie-1] == "X"):
+             
+             bombe_proche= bombe_proche+1
+
+          if(colonne_choisie !=0):
+             
+              if(tableau_placement[ligne_choisie][colonne_choisie-1] == "X"):
+                  bombe_proche= bombe_proche+1
+
+          if(colonne_choisie != 8):
+            
+            if(tableau_placement[ligne_choisie][colonne_choisie] == "X"):
+                  bombe_proche= bombe_proche+1
+
+
+      jeu_affiché[ligne_choisie][colonne_choisie] = bombe_proche
+
+if(gameOver == True):
+
+    print("BOOM")
+
+else:
+
+    print("Tu a parfaitement bien deminé ce champ")
+
+
+      
+print("-")
+
+affichage(tableau_placement)
+
+print("-")
